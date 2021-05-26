@@ -30,25 +30,31 @@ public class FileTransformObjectUtils {
             String line = br.readLine();
             Field[] fields = clazz.getDeclaredFields();
             while (line != null) {
-                Object object = clazz.newInstance();
-                // 一次读入一行数据
-                String[] split = line.split("\\s+", -1);
-                for (int j = 0; j < fields.length; j++) {
-                    Field field = fields[j];
-                    field.setAccessible(true);
-                    //判断对象属性类型 如果类型为Integer类型转换为Integer类型赋值
-                    //如果不是Integer类型转换为其他string类型赋值
-                    if (field.getType() == Integer.class) {
-                        field.set(object, new Integer(split[j].toString().trim()));
-                    } else if (field.getType() == Double.class) {
-                        field.set(object, new Double(split[j].toString().trim()));
-                    } else if (field.getType() == Date.class) {
-                        field.set(object, new SimpleDateFormat("yyyy-MM-dd").parse(split[j].toString().trim()));
-                    } else {
-                        field.set(object, split[j].toString());
+                if(fields.length==5){
+                    Object object = clazz.newInstance();
+                    // 一次读入一行数据
+                    String[] split = line.split("\\s+", -1);
+                    for (int j = 0; j < fields.length; j++) {
+                        Field field = fields[j];
+
+                        field.setAccessible(true);
+                        //判断对象属性类型 如果类型为Integer类型转换为Integer类型赋值
+                        //如果不是Integer类型转换为其他string类型赋值
+                        if (field.getType() == Integer.class) {
+                            field.set(object, new Integer(split[j].toString().trim()));
+                        } else if (field.getType() == Double.class) {
+                            field.set(object, new Double(split[j].toString().trim()));
+                        } else if (field.getType() == Date.class) {
+                            field.set(object, new SimpleDateFormat("yyyy-MM-dd").parse(split[j].toString().trim()));
+                        } else {
+                            field.set(object, split[j].toString());
+                        }
+
                     }
+
+                    list.add(object);
                 }
-                list.add(object);
+
                 line = br.readLine();
                 if (line==null){
                     break;

@@ -36,7 +36,7 @@ public class EmailServiceImpl implements EmailService {
         // 获取txt文件数据
         List<Emp> list = empFactory.getEmpList("txt").getEmp();
         // 生日为今日的emp集合 如果生日为阴历  则转为阳历
-        List<Emp> sends = list.stream().filter(k -> isSameDay(k.getBirthday(),k.getBirthdayDateType())).collect(Collectors.toList());
+        List<Emp> sends = list.stream().filter(k ->ObjectUtil.isNotEmpty(k.getBirthday())&& isSameDay(k.getBirthday(),k.getBirthdayDateType())).collect(Collectors.toList());
         if(CollectionUtil.isEmpty(sends)) return;
         sends.forEach(emp -> {
             // 这里可能是发邮件 企业微信  短信。。。。
