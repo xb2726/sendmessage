@@ -8,6 +8,7 @@ import cn.com.sendmessage.service.EmailService;
 import cn.com.sendmessage.service.SendMessage;
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     private boolean isSameDay(Date birthday,String birthdayDateType){
+        if(ObjectUtil.isEmpty(birthday)) return false;
         SimpleDateFormat format = new SimpleDateFormat("MM-dd");
         String today = format.format(new Date());
         if(birthdayDateType!=null &&birthdayDateType.equals(Constant.chineseDate)){
