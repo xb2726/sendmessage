@@ -44,6 +44,7 @@ public class EmailServiceImpl implements EmailService {
             map.put("date", DateUtil.formatChineseDate(new Date(), false, false));
             if(StrUtil.isNotBlank(emp.getEmail())){
                 sendMessage.sendEmail(map, title, templateName, emp.getEmail());
+                log.info("成功发送email:{}", emp);
             }
 
         });
