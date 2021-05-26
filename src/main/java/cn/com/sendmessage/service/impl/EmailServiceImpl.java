@@ -2,7 +2,7 @@ package cn.com.sendmessage.service.impl;
 
 import cn.com.sendmessage.Constant;
 import cn.com.sendmessage.common.ChineseCalendar;
-import cn.com.sendmessage.common.FileTransformObjectUtils;
+import cn.com.sendmessage.common.EmpFactory;
 import cn.com.sendmessage.entity.Emp;
 import cn.com.sendmessage.service.EmailService;
 import cn.com.sendmessage.service.SendMessage;
@@ -27,10 +27,13 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private SendMessage sendMessage;
 
+    @Autowired
+    EmpFactory empFactory;
+
     @Override
     public void sendBatchEmail(String title, String templateName) {
         // 获取txt文件数据
-        List<Emp> list =(List<Emp>)FileTransformObjectUtils.fileTransformObject("classpath:templates/emp.txt", Emp.class);
+        List<Emp> list = empFactory.getEmpList("txt").getEmp();
         // 生日为今日的emp集合 如果生日为阴历  则转为阳历
         List<Emp> sends = list.stream().filter(k -> isSameDay(k.getBirthday(),k.getBirthdayDateType())).collect(Collectors.toList());
         if(CollectionUtil.isEmpty(sends)) return;
